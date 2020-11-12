@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class UserServiceImplTest {
@@ -18,12 +19,12 @@ public class UserServiceImplTest {
     public void whenGetBorrowedBooks_thenBooksFromRepositoryAreReturned(){
         // Given:
         UserRepository userRepository = null;
-        BooksByUserRepository otherRepository = Mockito.mock(BooksByUserRepository.class);
-        UserServiceImpl userService = new UserServiceImpl(userRepository, otherRepository);
+        BooksByUserRepository bookByUserRepository = Mockito.mock(BooksByUserRepository.class);
+        UserServiceImpl userService = new UserServiceImpl(userRepository, bookByUserRepository);
         String curp = "ABC";
         Set<BooksByUser> booksByUser = new HashSet<>();
 
-        Mockito.when(otherRepository.findByCurp(curp)).thenReturn(booksByUser);
+        Mockito.when(bookByUserRepository.findByCurp(curp)).thenReturn(booksByUser);
 
         // When:
         Set<BooksByUser> receivedBooksByUser = userService.getBorrowedBooks(curp);
@@ -31,10 +32,29 @@ public class UserServiceImplTest {
         // Then:
         assertTrue(booksByUser == receivedBooksByUser);
 
-        Mockito.verify(otherRepository).findByCurp(curp);
-        Mockito.verifyNoMoreInteractions(otherRepository);
+        Mockito.verify(bookByUserRepository).findByCurp(curp);
+        Mockito.verifyNoMoreInteractions(bookByUserRepository);
     }
 
+    @Test
+    public void whenGetBorrowedBooks_thenBooksFromRepositoryAreReturnedFalse(){
+        // Given:
+        UserRepository userRepository = null;
+        BooksByUserRepository bookByUserRepository = Mockito.mock(BooksByUserRepository.class);
+        UserServiceImpl userService = new UserServiceImpl(userRepository, bookByUserRepository);
+        String curp = "ABC";
+        Set<BooksByUser> booksByUser = new HashSet<>();
 
+        Mockito.when(bookByUserRepository.findByCurp(curp)).thenReturn(booksByUser);
+
+        // When:
+        Set<BooksByUser> receivedBooksByUser = userService.getBorrowedBooks("Otra cosa");
+
+        // Then:
+        //assertFalse(booksByUser != receivedBooksByUser);
+
+        Mockito.verify(bookByUserRepository).findByCurp(curp);
+        Mockito.verifyNoMoreInteractions(bookByUserRepository);
+    }
 
 }
