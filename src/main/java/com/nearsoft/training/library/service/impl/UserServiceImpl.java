@@ -1,10 +1,8 @@
 package com.nearsoft.training.library.service.impl;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,12 +46,13 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void registerReturn(User user, String[] isbnList) {
+    public Set<BooksByUser> registerReturn(User user, String[] isbnList) {
         if(!userRepository.findById(user.getCurp()).isPresent()){
             userRepository.save(user);
         }
 
         booksByUserRepository.deleteByCurpAndIsbnIn(user.getCurp(), isbnList);
+        return null;
     }
 
     @Override

@@ -41,7 +41,7 @@ public class CardReaderServiceImpl implements CardReaderService {
         }
     }
 
-    User getUser(OutputStream outputStream, InputStream inputStream) throws IOException {
+    public User getUser(OutputStream outputStream, InputStream inputStream) throws IOException {
         try(PrintWriter out = new PrintWriter(outputStream, true);
             BufferedReader in = new BufferedReader(new InputStreamReader(inputStream))) {
             out.print("AX0");
@@ -57,6 +57,7 @@ public class CardReaderServiceImpl implements CardReaderService {
 
             return user;
         }
+
     }
 
 
