@@ -1,5 +1,6 @@
 package com.nearsoft.training.library.service.impl;
 
+import com.nearsoft.training.library.config.CardReaderConfigurationProperties;
 import com.nearsoft.training.library.config.LoanConfigurationProperties;
 import com.nearsoft.training.library.exception.LoanNotAllowedException;
 import com.nearsoft.training.library.model.Book;
@@ -118,6 +119,27 @@ class LoanServiceImplTest {
         //Then:
 
     }
+    @Test
+    public void algo(){
+        //Given:
+        String[] isbnList = {"123"};
+        CardReaderService cardReaderService = Mockito.mock(CardReaderService.class);
+        UserService userService = Mockito.mock(UserService.class);
+        LoanConfigurationProperties loanConfigurationProperties = Mockito.mock(LoanConfigurationProperties.class);
+        BookRepository bookRepository = Mockito.mock(BookRepository.class);
+        LoanServiceImpl loanService = new LoanServiceImpl(cardReaderService,userService,loanConfigurationProperties,bookRepository);
+        String curp = "123";
+        User user = new User();
+        user.setCurp(curp);
 
+        Set<BooksByUser> booksByUser = new HashSet<>();
+
+        Mockito.when(cardReaderService.readUser()).thenReturn(user);
+        Mockito.when(userService.getBorrowedBooks(user.getCurp())).thenReturn(booksByUser);
+        //When:
+        loanService.lendBooks(isbnList);
+
+        //Then:
+    }
 
 }

@@ -38,7 +38,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void lendBooks(String[] isbnList) {
+    public void lendBooks(String[] isbnList){
         User user = cardReaderService.readUser();
 
         validateLoan(user, isbnList);
